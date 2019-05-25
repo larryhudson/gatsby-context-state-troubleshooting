@@ -11,6 +11,7 @@ import { StaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
 import "./layout.css"
+import MyProvider from './context-provider'
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -24,7 +25,7 @@ const Layout = ({ children }) => (
       }
     `}
     render={data => (
-      <>
+      <MyProvider>
         <Header siteTitle={data.site.siteMetadata.title} />
         <div
           style={{
@@ -41,7 +42,7 @@ const Layout = ({ children }) => (
             <a href="https://www.gatsbyjs.org">Gatsby</a>
           </footer>
         </div>
-      </>
+      </MyProvider>
     )}
   />
 )
