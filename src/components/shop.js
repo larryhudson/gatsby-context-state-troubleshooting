@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { MyContext } from "./context-provider"
 
 const Shop = () => {
-  const { products, count, add } = useContext(MyContext)
+  const { products, count, add, contents } = useContext(MyContext)
 
   return (
     <div>
@@ -15,12 +15,8 @@ const Shop = () => {
           </li>
         ))}
       </ul>
-      {count > 0 && (
-        <div>
-          <h2>Cart</h2>
-          <p>{count} items in cart.</p>
-        </div>
-      )}
+      <h2>Cart</h2>
+      <p>{count} items in cart.</p>
     </div>
   )
 }

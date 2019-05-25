@@ -10,11 +10,13 @@ export const MyContext = React.createContext()
 const MyProvider = ({ children }) => {
   const products = ["product1", "product2", "product3"]
 
-  /** Load cart from local storage. Initialize if not present or incorrect. */
+  /** Load cart from local storage. Initialize if not present or incorrect.
+   *  This is the main context value - the 'count' value is derived from this.
+   */
   const [contents, setContents] = useState(() => {
     let localCart = false
     try {
-      localCart = JSON.parse(localStorage.getItem("example-cart"))
+      localCart = JSON.parse(localStorage.getItem("exampleCart"))
     } catch (err) {
       console.error(err.message)
     }
@@ -22,20 +24,24 @@ const MyProvider = ({ children }) => {
     return localCart
   })
 
-  // every time contents changes, update localStorage
+  // every time contents changes, update localStorage.
+  // this isn't working. it seems that it isn't re-rendering when setContents is called.
   useEffect(() => {
     try {
-      localStorage.setItem("example-cart", JSON.stringify(contents))
+      localStorage.setItem("exampleCart", JSON.stringify(contents))
     } catch (err) {
       console.error(err)
     }
   }, [contents])
 
   /** The number of items in the cart */
-  let count = contents.reduce((sum, [_, quantity]) => sum + quantity, 0)
+  const count = contents.reduce((sum, [_, quantity]) => sum + quantity, 0)
 
   /** Sets quantity of item with `id` */
   function set(id, quantity) {
+    console.log("contents before update:", contents)
+
+    // contents is array of [id, count], so we need to find by [0]
     const index = contents.findIndex(item => item[0] === id)
     setContents(state => {
       if (index !== -1) {
@@ -45,6 +51,8 @@ const MyProvider = ({ children }) => {
       }
       return state
     })
+
+    console.log("contents after update:", contents)
   }
 
   /** Increments item with `id` by `quantity`, which defaults to 0 */
