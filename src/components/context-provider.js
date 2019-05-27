@@ -44,12 +44,13 @@ const MyProvider = ({ children }) => {
     // contents is array of [id, count], so we need to find by [0]
     const index = contents.findIndex(item => item[0] === id)
     setContents(state => {
+      const newState = [...state]
       if (index !== -1) {
-        state[index] = [id, quantity]
+        newState[index] = [id, quantity]
       } else {
-        state.push([id, quantity])
+        newState.push([id, quantity])
       }
-      return state
+      return newState
     })
 
     console.log("contents after update:", contents)
